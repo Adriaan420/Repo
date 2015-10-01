@@ -3,8 +3,8 @@ import java.net.*;
 import java.io.*;
 
 public class Client {
-    private static String site = "www.westminstercollege.edu";
     public static void main(String[] args){
+    String site = "www.google.nl";
         try {
             Socket sock = new Socket("127.0.0.1",6052);
             

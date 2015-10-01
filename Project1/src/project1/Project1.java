@@ -2,42 +2,46 @@ package project1;
 import java.io.*;
 import java.net.*;
 
-class Runner implements Runnable {
-    public void run(){
-        
-    }
-}
 public class Project1 {
-    public static void main(String[] args) throws IOException{
-        Thread t1 = new Thread(new Runner());
-        Thread t2 = new Thread(new Runner());
-        t1.start();
-        t2.start();
-        
-        InetAddress hostAddress = InetAddress.getByName("www.westminstercollege.edu");
-        String IPaddress = hostAddress.getHostAddress();
+    public static void main(String[] args){
+        new Project1();
+    }
+    public Project1(){
         try {
-            ServerSocket srv = new ServerSocket(6052);
+            ServerSocket server = new ServerSocket(6052);
             while(true){
-            Socket clt = srv.accept();
-            PrintWriter pout = new PrintWriter(clt.getOutputStream(), true);
-            BufferedReader bin = new BufferedReader(new InputStreamReader(clt.getInputStream()));
-            if("www.westminstercollege.edu".equals(bin.readLine())) {
-                try{ 
+                Socket client = server.accept();
+                HandleClient task = new HandleClient(client);
+                new Thread(task).start();
+            }
+        }catch(IOException ioe){
+            System.err.println(ioe);
+    }
+ }
+class HandleClient implements Runnable {
+    private Socket client;
+    
+    public HandleClient(Socket client) {
+        this.client = client;
+    }
+    public void run(){
+        try{
+            InputStream in = client.getInputStream();
+            BufferedReader bin = new BufferedReader(new InputStreamReader(in));
+            //DataInputStream in = new DataInputStream(client.getInputStream());
+            //DataOutputStream out = new DataOutputStream(client.getOutputStream());
+            PrintWriter pout = new PrintWriter(client.getOutputStream(), true);
+            while(true){
+                InetAddress hostAddress = InetAddress.getByName(bin.readLine());
+                String IPaddress = hostAddress.getHostAddress();
                 pout.println(IPaddress);
-                clt.close(); 
-                }catch(UnknownHostException e) {
-                System.err.println(e);
-                }
-           // }else{
-           //     pout.println("Unable to resolve host" + bin.readLine());
-           //     clt.close();
+                client.close();
             }
-            }
-
-            
-            }catch(IOException ioe){
-                System.err.println(ioe);
-            }
+        }catch(UnknownHostException e){
+            System.err.println(e);
+        }catch(IOException ioe){
+            System.err.println(ioe);
         }
     }
+}
+}
