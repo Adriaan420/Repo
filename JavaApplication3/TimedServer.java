@@ -50,7 +50,7 @@ public class TimedServer
 				worker.start();
 			}
 		}
-		catch (InterruptedException ie) { }
+	//	catch (InterruptedException ie) { }
 		catch (java.io.IOException ioe) { }
 	}
 }
