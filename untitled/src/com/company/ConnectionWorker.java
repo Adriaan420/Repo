@@ -15,10 +15,7 @@ import java.lang.management.BufferPoolMXBean;
 import java.net.Socket;
 import java.util.concurrent.Semaphore;
 
-public class ConnectionWorker implements Runnable
-{
-    private int sleepTime = 10;
-    private Semaphore sem;
+public class ConnectionWorker implements Runnable {
 
     private Socket connection;
 

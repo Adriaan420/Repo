@@ -1,7 +1,5 @@
 package com.company;
-/**
- * Created by Danny on 13-10-2015.
- */
+
 public class Measurement {
         String stn;
         String date;
